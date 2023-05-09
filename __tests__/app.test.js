@@ -29,3 +29,13 @@ describe("/api/topics", () => {
       })
   });
 });
+
+// describe('/api/articles/:article_id', () => {
+//     test("GET - status 200 - Returns status 200 and correct article by id", () => {
+//         return request(app)
+//         .get("/api/articles/1").expect(200).then((res)=> {
+//             console.log(res.body)
+//             expect(res.body.article).toHaveProperty("titl")
+//         })
+//     })
+// })
