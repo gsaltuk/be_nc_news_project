@@ -15,7 +15,7 @@ describe("/api/topics", () => {
       .expect(200)
       .then((res) => {
         expect(Array.isArray(res.body.topics)).toBe(true);
-        expect(res.body.topics.length).toBe(3)
+        expect(res.body.topics.length).toBe(3);
         expect(res.body.topics[0]).toHaveProperty("slug");
         expect(res.body.topics[0]).toHaveProperty("description");
       });
@@ -25,8 +25,22 @@ describe("/api/topics", () => {
       .get("/api/nonsense")
       .expect(404)
       .then((res) => {
-        expect(res.body.msg).toBe("Error - check endpoint and retry")
-      })
+        expect(res.body.msg).toBe("Error - check endpoint and retry");
+      });
+  });
+});
+
+describe("/api", () => {
+  test("GET - status 200 - Returns status 200 with JSON object", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((res) => {
+        expect(typeof res.body.result).toBe("object");
+        expect(res.body.result).toHaveProperty("GET /api");
+        expect(res.body.result).toHaveProperty("GET /api/topics");
+        expect(res.body.result).toHaveProperty("GET /api/articles");
+      });
   });
 });
 
