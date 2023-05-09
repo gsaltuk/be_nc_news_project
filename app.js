@@ -4,10 +4,12 @@ const app = express();
 
 app.use(express.json());
 
+app.get("/api/topics", getTopics);
 
-app.get('/api/topics', getTopics)
 
 
-console.log("IN APP")
+app.all("*", (req, res) => {
+  res.status(404).send({msg: "Error - check endpoint and retry"});
+});
+
 module.exports = app;
-

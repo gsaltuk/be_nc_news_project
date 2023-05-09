@@ -14,7 +14,6 @@ describe("/api/topics", () => {
       .get("/api/topics")
       .expect(200)
       .then((res) => {
-        console.log("IN TEST");
         expect(Array.isArray(res.body.topics)).toBe(true);
         expect(res.body.topics.length).toBe(3)
         expect(res.body.topics[0]).toHaveProperty("slug");
@@ -25,5 +24,8 @@ describe("/api/topics", () => {
     return request(app)
       .get("/api/nonsense")
       .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Error - check endpoint and retry")
+      })
   });
 });
