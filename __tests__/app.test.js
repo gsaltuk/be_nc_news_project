@@ -36,7 +36,6 @@ describe("/api", () => {
       .get("/api")
       .expect(200)
       .then((res) => {
-        console.log(res.body.result);
         expect(typeof res.body.result).toBe("object");
         expect(res.body.result).toHaveProperty("GET /api");
         expect(res.body.result).toHaveProperty("GET /api/topics");

@@ -13,8 +13,7 @@ exports.getTopics = (req, res, next) => {
 exports.getApi = (req, res, next) => {
   fetchApi()
     .then((result) => {
-      const parsedResult = JSON.parse(result);
-      res.status(200).send({ result: parsedResult });
+      res.status(200).send({ result });
     })
     .catch((err) => {
       next(err);
