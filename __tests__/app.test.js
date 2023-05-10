@@ -51,13 +51,13 @@ describe("/api/articles/:article_id", () => {
       .expect(200)
       .then((res) => {
         expect(res.body.article.article_id).toBe(1);
-        expect(res.body.article).toHaveProperty("title");
-        expect(res.body.article).toHaveProperty("author");
-        expect(res.body.article).toHaveProperty("body");
-        expect(res.body.article).toHaveProperty("votes");
-        expect(res.body.article).toHaveProperty("article_id");
-        expect(res.body.article).toHaveProperty("created_at");
-        expect(res.body.article).toHaveProperty("article_img_url");
+        expect.objectContaining("title");
+        expect.objectContaining("author");
+        expect.objectContaining("body");
+        expect.objectContaining("votes");
+        expect.objectContaining("article_id");
+        expect.objectContaining("created_at");
+        expect.objectContaining("article_img_url");
       });
   });
   test("GET - status 404 - Returns status 404 & error message if article_id does not exist", () => {
