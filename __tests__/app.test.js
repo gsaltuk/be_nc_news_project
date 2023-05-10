@@ -50,7 +50,6 @@ describe("/api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then((res) => {
-        console.log(res.body.article)
         expect(res.body.article.article_id).toBe(1);
         expect(res.body.article).toEqual(
           expect.objectContaining({
@@ -80,6 +79,29 @@ describe("/api/articles/:article_id", () => {
       .then((res) => {
         console.log;
         expect(res.body.msg).toBe("Invalid input");
+      });
+  });
+});
+
+describe("/api/articles/:article_id/comments", () => {
+  test("GET - status 200 - Returns array of comment objects for correct article_id sorted by created_at DESC", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((res) => {
+        console.log(res.body.comments)
+        expect(Array.isArray(res.body.comments)).toBe(true);
+        expect(res.body.comments).toBeSortedBy('created_at', {descending: true});
+        expect(res.body.comments[0]).toEqual(
+          expect.objectContaining({
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            body: expect.any(String),
+            author: expect.any(String),
+            article_id: expect.any(Number),
+            created_at: expect.any(String),
+          })
+        );
       });
   });
 });

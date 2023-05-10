@@ -2,6 +2,9 @@ const express = require("express");
 const { getTopics } = require("./controllers/topics.controllers");
 const { getApi } = require("./controllers/api.controllers");
 const { getArticleById } = require("./controllers/articles.controllers");
+const {
+  getCommentsByArticleId,
+} = require("./controllers/comments.controllers");
 const app = express();
 
 //GET requests
@@ -12,6 +15,7 @@ app.get("/api", getApi);
 
 app.get("/api/articles/:article_id", getArticleById);
 
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 //Error Handling
 
