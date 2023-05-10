@@ -43,3 +43,43 @@ describe("/api", () => {
       });
   });
 });
+
+describe("/api/articles/:article_id", () => {
+  test("GET - status 200 - Returns status 200 and correct article by id with correct key", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((res) => {
+        console.log(res.body.article)
+        expect(res.body.article.article_id).toBe(1);
+        expect(res.body.article).toEqual(
+          expect.objectContaining({
+            title: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            votes: expect.any(Number),
+            article_id: expect.any(Number),
+            created_at: expect.any(String),
+            article_img_url: expect.any(String),
+          })
+        );
+      });
+  });
+  test("GET - status 404 - Returns status 404 & error message if article_id does not exist", () => {
+    return request(app)
+      .get("/api/articles/150")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Article does not exist");
+      });
+  });
+  test("GET - status 400 - Returns status 400 & error message if article_id input is not number", () => {
+    return request(app)
+      .get("/api/articles/hello")
+      .expect(400)
+      .then((res) => {
+        console.log;
+        expect(res.body.msg).toBe("Invalid input");
+      });
+  });
+});
