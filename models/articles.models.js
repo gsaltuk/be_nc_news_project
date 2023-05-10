@@ -10,3 +10,7 @@ exports.fetchArticleById = (id) => {
     return res.rows[0];
   });
 };
+
+exports.fetchArticles = () => {
+  
+}

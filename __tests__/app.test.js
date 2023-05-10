@@ -50,7 +50,6 @@ describe("/api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then((res) => {
-        console.log(res.body.article)
         expect(res.body.article.article_id).toBe(1);
         expect(res.body.article).toEqual(
           expect.objectContaining({
@@ -83,3 +82,14 @@ describe("/api/articles/:article_id", () => {
       });
   });
 });
+
+// describe("/api/articles", () => {
+//   test("GET - Status 200 - Returns status 200 with array of objects with included comment_count property", () => {
+//     return request(app)
+//     .get("/api/articles")
+//     .expect(200)
+//     .then((res) => {
+//       expect(Array.isArray(res.body.articles)).toBe(true)
+//     })
+//   })
+// })
