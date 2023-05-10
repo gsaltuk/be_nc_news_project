@@ -14,8 +14,6 @@ app.get("/api/articles", getArticles)
 
 app.get("/api/articles/:article_id", getArticleById);
 
-
-
 //Error Handling
 //Incorrect Endpoint Errors
 
