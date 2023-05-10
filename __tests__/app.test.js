@@ -50,13 +50,14 @@ describe("/api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then((res) => {
-        expect(res.body.article[0]).toHaveProperty("title");
-        expect(res.body.article[0]).toHaveProperty("author");
-        expect(res.body.article[0]).toHaveProperty("body");
-        expect(res.body.article[0]).toHaveProperty("votes");
-        expect(res.body.article[0]).toHaveProperty("article_id");
-        expect(res.body.article[0]).toHaveProperty("created_at");
-        expect(res.body.article[0]).toHaveProperty("article_img_url");
+        expect(res.body.article.article_id).toBe(1);
+        expect(res.body.article).toHaveProperty("title");
+        expect(res.body.article).toHaveProperty("author");
+        expect(res.body.article).toHaveProperty("body");
+        expect(res.body.article).toHaveProperty("votes");
+        expect(res.body.article).toHaveProperty("article_id");
+        expect(res.body.article).toHaveProperty("created_at");
+        expect(res.body.article).toHaveProperty("article_img_url");
       });
   });
   test("GET - status 404 - Returns status 404 & error message if article_id does not exist", () => {
@@ -67,12 +68,13 @@ describe("/api/articles/:article_id", () => {
         expect(res.body.msg).toBe("Article does not exist");
       });
   });
-  test("GET - status 404 - Returns status 404 & error message if article_id input is not number", () => {
+  test("GET - status 400 - Returns status 400 & error message if article_id input is not number", () => {
     return request(app)
       .get("/api/articles/hello")
-      .expect(404)
+      .expect(400)
       .then((res) => {
-        expect(res.body.msg).toBe("Please only input number");
+        console.log;
+        expect(res.body.msg).toBe("Invalid input");
       });
   });
 });
