@@ -50,14 +50,19 @@ describe("/api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then((res) => {
+        console.log(res.body.article)
         expect(res.body.article.article_id).toBe(1);
-        expect.objectContaining("title");
-        expect.objectContaining("author");
-        expect.objectContaining("body");
-        expect.objectContaining("votes");
-        expect.objectContaining("article_id");
-        expect.objectContaining("created_at");
-        expect.objectContaining("article_img_url");
+        expect(res.body.article).toEqual(
+          expect.objectContaining({
+            title: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            votes: expect.any(Number),
+            article_id: expect.any(Number),
+            created_at: expect.any(String),
+            article_img_url: expect.any(String),
+          })
+        );
       });
   });
   test("GET - status 404 - Returns status 404 & error message if article_id does not exist", () => {
