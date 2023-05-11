@@ -172,13 +172,50 @@ describe("/api/articles/:article_id/comments", () => {
       .get("/api/articles/2/comments")
       .expect(200)
       .then((res) => {
-        console.log(res.body);
         expect(res.body.comments).toEqual([]);
       });
   });
   test("Returns status 400 and error msg if incorrect article format", () => {
     return request(app)
       .get("/api/articles/hello/comments")
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("Invalid input");
+      });
+  });
+});
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("PATCH - status 200 - returns status code 200 with updated object", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 1 })
+      .expect(200)
+      .then((res) => {
+        expect(res.body.updatedArticle.votes).toBe(101);
+      });
+  });
+  test("Patch method works with larger number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 300 })
+      .expect(200)
+      .then((res) => {
+        expect(res.body.updatedArticle.votes).toBe(400);
+      });
+  });
+  test("Returns status 404 with error msg if article does not exist", () => {
+    return request(app)
+      .patch("/api/articles/9999")
+      .send({ inc_votes: 1 })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Article not found!");
+      });
+  });
+  test("Returns status 400 & error message if article_id input is not number", () => {
+    return request(app)
+      .get("/api/articles/hello")
       .expect(400)
       .then((res) => {
         expect(res.body.msg).toBe("Invalid input");
