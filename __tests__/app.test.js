@@ -185,3 +185,13 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 });
+
+
+// describe("/api/comments/:comment_id", () => {
+//   test("DELETE - Status 204 - Returns status 204 and no content", () => {
+//     return request(app)
+//     .delete("/api/comments/12")
+//     .expect(204)
+
+//   })
+// })
