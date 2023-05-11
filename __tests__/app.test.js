@@ -57,17 +57,19 @@ describe("/api/articles", () => {
       .expect(200)
       .then((res) => {
         expect(Array.isArray(res.body.articles)).toBe(true);
-        expect(res.body.articles[0]).toEqual(
-          expect.objectContaining({
-            article_id: expect.any(Number),
-            article_img_url: expect.any(String),
-            author: expect.any(String),
-            comment_count: expect.any(String),
-            created_at: expect.any(String),
-            topic: expect.any(String),
-            votes: expect.any(Number),
-          })
-        );
+        res.body.articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              article_img_url: expect.any(String),
+              author: expect.any(String),
+              comment_count: expect.any(String),
+              created_at: expect.any(String),
+              topic: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
       });
   });
   test("Object does not have body property", () => {
