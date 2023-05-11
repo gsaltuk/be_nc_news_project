@@ -3,9 +3,13 @@ const { getTopics } = require("./controllers/topics.controllers");
 const { getApi } = require("./controllers/api.controllers");
 const {
   getCommentsByArticleId,
+  deleteCommentById,
 } = require("./controllers/comments.controllers");
 
-const { getArticleById, getArticles } = require("./controllers/articles.controllers");
+const {
+  getArticleById,
+  getArticles,
+} = require("./controllers/articles.controllers");
 const app = express();
 
 //GET requests
@@ -14,11 +18,15 @@ app.get("/api", getApi);
 
 app.get("/api/topics", getTopics);
 
-app.get("/api/articles", getArticles)
+app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+
+//DELETE requests
+
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 //Error Handling
 //Incorrect Endpoint Errors

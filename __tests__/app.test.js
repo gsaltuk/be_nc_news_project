@@ -172,7 +172,6 @@ describe("/api/articles/:article_id/comments", () => {
       .get("/api/articles/2/comments")
       .expect(200)
       .then((res) => {
-        console.log(res.body);
         expect(res.body.comments).toEqual([]);
       });
   });
@@ -186,12 +185,10 @@ describe("/api/articles/:article_id/comments", () => {
   });
 });
 
-
-// describe("/api/comments/:comment_id", () => {
-//   test("DELETE - Status 204 - Returns status 204 and no content", () => {
-//     return request(app)
-//     .delete("/api/comments/12")
-//     .expect(204)
-
-//   })
-// })
+describe("/api/comments/:comment_id", () => {
+  test("DELETE - Status 204 - Returns status 204 and no content", () => {
+    return request(app).delete("/api/comments/12").expect(204).then((res) => {
+      expect(res.body).toEqual({})
+    })
+  });
+});
