@@ -2,6 +2,3 @@ node_modules
 .env.development
 .env.test
 playground.js
-
-
-

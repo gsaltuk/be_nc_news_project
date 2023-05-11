@@ -38,7 +38,7 @@ describe("/api/topics", () => {
         expect(res.body.topics[0]).toHaveProperty("description");
       });
   });
-  test("GET - status 404 - Returns status 404 and error message when incorrect endpoint", () => {
+  test("Returns status 404 and error message when incorrect endpoint", () => {
     return request(app)
       .get("/api/nonsense")
       .expect(404)
@@ -116,7 +116,7 @@ describe("/api/articles/:article_id", () => {
         );
       });
   });
-  test("GET - status 404 - Returns status 404 & error message if article_id does not exist", () => {
+  test("Returns status 404 & error message if article_id does not exist", () => {
     return request(app)
       .get("/api/articles/150")
       .expect(404)
@@ -124,12 +124,63 @@ describe("/api/articles/:article_id", () => {
         expect(res.body.msg).toBe("Article does not exist");
       });
   });
-  test("GET - status 400 - Returns status 400 & error message if article_id input is not number", () => {
+  test("Returns status 400 & error message if article_id input is not number", () => {
     return request(app)
       .get("/api/articles/hello")
       .expect(400)
       .then((res) => {
         console.log;
+        expect(res.body.msg).toBe("Invalid input");
+      });
+  });
+});
+
+describe("/api/articles/:article_id/comments", () => {
+  test("GET - status 200 - Returns array of comment objects for correct article_id sorted by created_at DESC", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((res) => {
+        expect(Array.isArray(res.body.comments)).toBe(true);
+        expect(res.body.comments).toBeSortedBy("created_at", {
+          descending: true,
+        });
+        res.body.comments.forEach((comment) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              body: expect.any(String),
+              author: expect.any(String),
+              article_id: expect.any(Number),
+              created_at: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+  test("Returns status 404 and error msg if article does not exist", () => {
+    return request(app)
+      .get("/api/articles/9999/comments")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Article not found!");
+      });
+  });
+  test("Returns status 200 and empty array if article exists but no comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then((res) => {
+        console.log(res.body);
+        expect(res.body.comments).toEqual([]);
+      });
+  });
+  test("Returns status 400 and error msg if incorrect article format", () => {
+    return request(app)
+      .get("/api/articles/hello/comments")
+      .expect(400)
+      .then((res) => {
         expect(res.body.msg).toBe("Invalid input");
       });
   });
