@@ -10,7 +10,7 @@ afterAll(() => connection.end());
 
 //API
 
-describe("/api", () => {
+describe("GET /api", () => {
   test("GET - status 200 - Returns status 200 with JSON object", () => {
     return request(app)
       .get("/api")
@@ -26,7 +26,7 @@ describe("/api", () => {
 
 //TOPICS
 
-describe("/api/topics", () => {
+describe("GET /api/topics", () => {
   test("GET - status 200 - Returns all topics in an array, with properties slug & description", () => {
     return request(app)
       .get("/api/topics")
@@ -50,7 +50,7 @@ describe("/api/topics", () => {
 
 //ARTICLES
 
-describe("/api/articles", () => {
+describe("GET /api/articles", () => {
   test("GET - Status 200 - Returns status 200 with array of objects with included comment_count property", () => {
     return request(app)
       .get("/api/articles")
@@ -96,7 +96,7 @@ describe("/api/articles", () => {
   });
 });
 
-describe("/api/articles/:article_id", () => {
+describe("GET /api/articles/:article_id", () => {
   test("GET - status 200 - Returns status 200 and correct article by id with correct key", () => {
     return request(app)
       .get("/api/articles/1")
@@ -134,57 +134,8 @@ describe("/api/articles/:article_id", () => {
   });
 });
 
-describe("/api/articles/:article_id/comments", () => {
-  test("POST - status 200 - Returns status 200 and posted comment object", () => {
-    return request(app)
-      .post("/api/articles/1/comments")
-      .send({
-        username: "butter_bridge",
-        body: "Totally agree, thank you for posting this",
-      })
-      .expect(200)
-      .then((res) => {
-        expect(res.body.commentPosted[0]).toEqual(
-          expect.objectContaining({
-            article_id: expect.any(Number),
-            author: expect.any(String),
-            body: expect.any(String),
-            comment_id: expect.any(Number),
-            created_at: expect.any(String),
-            votes: expect.any(Number),
-          })
-        );
-      });
-  });
-  test("Returns status 400 and error message when sent missing body", () => {
-    return request(app)
-      .post("/api/articles/1/comments")
-      .send({
-        username: "butter_bridge",
-      })
-      .expect(400)
-      .then((res) => {
-        expect(res.body.msg).toBe("body data required");
-      });
-  });
-  test("Returns status 400 and error message when sent missing author", () => {
-    return request(app)
-      .post("/api/articles/1/comments")
-      .send({
-        body: "Totally agree, thank you for posting this",
-      })
-      .expect(400)
-      .then((res) => {
-        expect(res.body.msg).toBe("author data required");
-      });
-  });
-  test("Returns status 400 and error message when sent missing author", () => {
-    return request(app)
-      .post("/api/articles/9999/comments")
-      .send({
-        username: "butter_bridge",
-        body: "Totally agree, thank you for posting this"
-      })})
+
+describe("GET /api/articles/:article_id/comments ", () => {
   test("GET - status 200 - Returns array of comment objects for correct article_id sorted by created_at DESC", () => {
     return request(app)
       .get("/api/articles/1/comments")
@@ -233,4 +184,57 @@ describe("/api/articles/:article_id/comments", () => {
         expect(res.body.msg).toBe("Invalid input");
       });
   });
-})
+});
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("POST - status 200 - Returns status 200 and posted comment object", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Totally agree, thank you for posting this",
+      })
+      .expect(200)
+      .then((res) => {
+        expect(res.body.commentPosted[0]).toEqual(
+          expect.objectContaining({
+            article_id: expect.any(Number),
+            author: expect.any(String),
+            body: expect.any(String),
+            comment_id: expect.any(Number),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+          })
+        );
+      });
+  });
+  test("Returns status 400 and error message when sent missing body", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        username: "butter_bridge",
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("body data required");
+      });
+  });
+  test("Returns status 400 and error message when sent missing author", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        body: "Totally agree, thank you for posting this",
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("author data required");
+      });
+  });
+  test("Returns status 400 and error message when sent missing author", () => {
+    return request(app).post("/api/articles/9999/comments").send({
+      username: "butter_bridge",
+      body: "Totally agree, thank you for posting this",
+    });
+  });
+});
+
