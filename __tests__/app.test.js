@@ -8,6 +8,24 @@ beforeEach(() => seed(testData));
 
 afterAll(() => connection.end());
 
+//API
+
+describe("/api", () => {
+  test("GET - status 200 - Returns status 200 with JSON object", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((res) => {
+        expect(typeof res.body.result).toBe("object");
+        expect(res.body.result).toHaveProperty("GET /api");
+        expect(res.body.result).toHaveProperty("GET /api/topics");
+        expect(res.body.result).toHaveProperty("GET /api/articles");
+      });
+  });
+});
+
+//TOPICS
+
 describe("/api/topics", () => {
   test("GET - status 200 - Returns all topics in an array, with properties slug & description", () => {
     return request(app)
@@ -30,16 +48,50 @@ describe("/api/topics", () => {
   });
 });
 
-describe("/api", () => {
-  test("GET - status 200 - Returns status 200 with JSON object", () => {
+//ARTICLES
+
+describe("/api/articles", () => {
+  test("GET - Status 200 - Returns status 200 with array of objects with included comment_count property", () => {
     return request(app)
-      .get("/api")
+      .get("/api/articles")
       .expect(200)
       .then((res) => {
-        expect(typeof res.body.result).toBe("object");
-        expect(res.body.result).toHaveProperty("GET /api");
-        expect(res.body.result).toHaveProperty("GET /api/topics");
-        expect(res.body.result).toHaveProperty("GET /api/articles");
+        expect(Array.isArray(res.body.articles)).toBe(true);
+        res.body.articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              article_img_url: expect.any(String),
+              author: expect.any(String),
+              comment_count: expect.any(String),
+              created_at: expect.any(String),
+              topic: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("Object does not have body property", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((res) => {
+        expect(Array.isArray(res.body.articles)).toBe(true);
+        expect(res.body.articles[0]).toEqual(
+          expect.not.objectContaining({
+            body: expect.any(String),
+          })
+        );
+      });
+  });
+  test("Returned array is sorted in DESC order", () => {
+    return request(app)
+      .get("/api/articles")
+      .then((res) => {
+        expect(res.body.articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
       });
   });
 });
