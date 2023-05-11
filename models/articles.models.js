@@ -32,6 +32,9 @@ exports.updateArticle = (id, voteInc) => {
   WHERE article_id = $2
   RETURNING *;
   `;
+  if (typeof voteInc !== "number") {
+    return Promise.reject({ status: 400, msg: "Incorrect data type" });
+  }
   return checkArticleExists(id).then(() => {
     return connection.query(selectQuer, [voteInc, id]).then((res) => {
       return res.rows[0];

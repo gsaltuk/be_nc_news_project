@@ -221,4 +221,13 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(res.body.msg).toBe("Invalid input");
       });
   });
+  test("Returns status 400 & error message if inc_votes value is not a number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "incorrect data type" })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("Incorrect data type");
+      });
+  });
 });
