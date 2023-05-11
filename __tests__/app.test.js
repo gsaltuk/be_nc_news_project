@@ -129,8 +129,65 @@ describe("/api/articles/:article_id", () => {
       .get("/api/articles/hello")
       .expect(400)
       .then((res) => {
-        console.log;
         expect(res.body.msg).toBe("Invalid input");
+      });
+  });
+});
+
+describe("/api/articles/:article_id/comments", () => {
+  test("POST - status 200 - Returns status 200 and posted comment object", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Totally agree, thank you for posting this",
+      })
+      .expect(200)
+      .then((res) => {
+        expect(res.body.commentPosted[0]).toEqual(
+          expect.objectContaining({
+            article_id: expect.any(Number),
+            author: expect.any(String),
+            body: expect.any(String),
+            comment_id: expect.any(Number),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+          })
+        );
+      });
+  });
+  test("Returns status 400 and error message when sent missing body", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        username: "butter_bridge",
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("body data required");
+      });
+  });
+  test("Returns status 400 and error message when sent missing author", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        body: "Totally agree, thank you for posting this",
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("author data required");
+      });
+  });
+  test("Returns status 400 and error message when sent missing author", () => {
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Totally agree, thank you for posting this"
+      })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Article not found!");
       });
   });
 });

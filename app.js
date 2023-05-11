@@ -2,7 +2,10 @@ const express = require("express");
 const { getTopics } = require("./controllers/topics.controllers");
 const { getApi } = require("./controllers/api.controllers");
 const { getArticleById, getArticles } = require("./controllers/articles.controllers");
+const { postComments } = require("./controllers/comments.controllers");
 const app = express();
+
+app.use(express.json())
 
 //GET requests
 
@@ -14,6 +17,9 @@ app.get("/api/articles", getArticles)
 
 app.get("/api/articles/:article_id", getArticleById);
 
+//POST requests
+
+app.post("/api/articles/:article_id/comments", postComments)
 //Error Handling
 //Incorrect Endpoint Errors
 
