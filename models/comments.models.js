@@ -1,5 +1,5 @@
 const connection = require("../db/connection");
-const { checkArticleExists } = require("../db/seeds/utils");
+const { checkArticleExists, checkCommentExists } = require("../db/seeds/utils");
 
 exports.fetchCommentsByArticleId = (id) => {
   let queryStr = `
@@ -19,7 +19,9 @@ exports.removeCommentById = (id) => {
   DELETE FROM comments
   WHERE comment_id = $1;
   `;
-  return connection.query(queryStr, [id]).then((res) => {
-    return res.rows;
+  return checkCommentExists(id).then(() => {
+    return connection.query(queryStr, [id]).then((res) => {
+      return res.rows;
+    });
   });
 };

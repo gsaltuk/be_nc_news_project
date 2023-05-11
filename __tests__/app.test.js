@@ -185,10 +185,29 @@ describe("/api/articles/:article_id/comments", () => {
   });
 });
 
-describe("/api/comments/:comment_id", () => {
+describe("DELETE /api/comments/:comment_id", () => {
   test("DELETE - Status 204 - Returns status 204 and no content", () => {
-    return request(app).delete("/api/comments/12").expect(204).then((res) => {
-      expect(res.body).toEqual({})
-    })
+    return request(app)
+      .delete("/api/comments/12")
+      .expect(204)
+      .then((res) => {
+        expect(res.body).toEqual({});
+      });
+  });
+  test("Returns status 400 and error message when id is not integer", () => {
+    return request(app)
+      .delete("/api/comments/hello")
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toEqual("Invalid input");
+      });
+  });
+  test("Returns status 404 and error message when id does not exist", () => {
+    return request(app)
+      .delete("/api/comments/9999")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toEqual("Comment not found!");
+      });
   });
 });
