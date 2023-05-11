@@ -134,7 +134,6 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
-
 describe("GET /api/articles/:article_id/comments ", () => {
   test("GET - status 200 - Returns array of comment objects for correct article_id sorted by created_at DESC", () => {
     return request(app)
@@ -187,14 +186,14 @@ describe("GET /api/articles/:article_id/comments ", () => {
 });
 
 describe("POST /api/articles/:article_id/comments", () => {
-  test("POST - status 200 - Returns status 200 and posted comment object", () => {
+  test("POST - status 201 - Returns status 201 and posted comment object", () => {
     return request(app)
       .post("/api/articles/1/comments")
       .send({
         username: "butter_bridge",
         body: "Totally agree, thank you for posting this",
       })
-      .expect(200)
+      .expect(201)
       .then((res) => {
         expect(res.body.commentPosted[0]).toEqual(
           expect.objectContaining({
@@ -230,11 +229,41 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(res.body.msg).toBe("author data required");
       });
   });
-  test("Returns status 400 and error message when sent missing author", () => {
-    return request(app).post("/api/articles/9999/comments").send({
-      username: "butter_bridge",
-      body: "Totally agree, thank you for posting this",
-    });
+  test("Returns status 404 and error message when username not found", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        username: "mrsaltuk",
+        body: "Totally agree, thank you for posting this",
+      })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Username not found");
+      });
+  });
+  test("Returns status 404 and error message when article does not exist", () => {
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Totally agree, thank you for posting this",
+      })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Article not found");
+      });
+  });
+  test("Returns status 201 and posted comment object ignoring additonal properties", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Totally agree, thank you for posting this",
+        nonsense: "Testing value"
+      })
+      .expect(201)
+      .then((res) => {
+        expect(res.body.commentPosted).not.toHaveProperty("nonsense");
+      });
   });
 });
-

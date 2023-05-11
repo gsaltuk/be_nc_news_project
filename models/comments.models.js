@@ -23,16 +23,14 @@ exports.createComment = (id, author, commentBody) => {
   ($1, $2, $3)
   RETURNING *;
   `;
-  
+
   if (!author) {
     return Promise.reject({ status: 400, msg: "author data required" });
   }
   if (!commentBody) {
     return Promise.reject({ status: 400, msg: "body data required" });
-  } 
-  return checkArticleExists(id).then(() => {
-    return connection.query(queryStr, queryArr).then((res) => {
-      return res.rows;
-    });
+  }
+  return connection.query(queryStr, queryArr).then((res) => {
+    return res.rows;
   });
 };

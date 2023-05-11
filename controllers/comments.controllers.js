@@ -17,9 +17,8 @@ exports.postComments = (req, res, next) => {
   const author = req.body.username;
   const commentBody = req.body.body;
   createComment(id, author, commentBody).then((result) => {
-    return res.status(200).send({commentPosted: result})
+    return res.status(201).send({commentPosted: result})
   }).catch((err) => {
-    console.log(err)
     next(err)
   })
 };
