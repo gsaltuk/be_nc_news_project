@@ -1,4 +1,4 @@
-const connection = require("../connection");
+const connection = require("../connection.js");
 
 exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   if (!created_at) return { ...otherProperties };
@@ -24,7 +24,6 @@ exports.formatComments = (comments, idLookup) => {
 };
 
 exports.checkArticleExists = (article) => {
-  console.log("IN UTIL")
   return connection.query(`SELECT * FROM articles WHERE article_id = $1;`, [article]).then((res) => {
       if(res.rows.length === 0){
           return Promise.reject({status: 404, msg: "Article not found!"})
