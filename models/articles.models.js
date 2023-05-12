@@ -1,4 +1,5 @@
 const connection = require("../db/connection");
+const { checkArticleExists } = require("../db/seeds/utils");
 
 exports.fetchArticleById = (id) => {
   let queryStr = `SELECT * FROM articles
@@ -21,5 +22,22 @@ exports.fetchArticles = () => {
   `;
   return connection.query(queryStr).then((result) => {
     return result.rows;
+  });
+};
+
+exports.updateArticle = (id, voteInc) => {
+  let selectQuer = `
+  UPDATE articles
+  SET votes = votes + $1
+  WHERE article_id = $2
+  RETURNING *;
+  `;
+  if (typeof voteInc !== "number") {
+    return Promise.reject({ status: 400, msg: "Incorrect data type" });
+  }
+  return checkArticleExists(id).then(() => {
+    return connection.query(selectQuer, [voteInc, id]).then((res) => {
+      return res.rows[0];
+    });
   });
 };

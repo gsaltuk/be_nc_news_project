@@ -4,13 +4,15 @@ const { getApi } = require("./controllers/api.controllers");
 const {
   getCommentsByArticleId,
 } = require("./controllers/comments.controllers");
-
 const {
   getArticleById,
   getArticles,
+  patchArticle,
 } = require("./controllers/articles.controllers");
 const { postComments } = require("./controllers/comments.controllers");
 const app = express();
+
+app.use(express.json());
 
 app.use(express.json());
 
@@ -26,6 +28,9 @@ app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
+//PATCH requests
+
+app.patch("/api/articles/:article_id", patchArticle);
 //POST requests
 
 app.post("/api/articles/:article_id/comments", postComments);
