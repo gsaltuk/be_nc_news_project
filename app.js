@@ -1,24 +1,25 @@
+//*** REQUIRES ***
 const express = require("express");
 const { getTopics } = require("./controllers/topics.controllers");
 const { getApi } = require("./controllers/api.controllers");
 const {
   getCommentsByArticleId,
   deleteCommentById,
+  postComments
 } = require("./controllers/comments.controllers");
 const {
   getArticleById,
   getArticles,
   patchArticle,
 } = require("./controllers/articles.controllers");
-const { postComments } = require("./controllers/comments.controllers");
 const app = express();
 
+
+//*** JSON PARSER ***
 app.use(express.json());
 
-app.use(express.json());
 
-//GET requests
-
+//*** GET REQUESTS ***
 app.get("/api", getApi);
 
 app.get("/api/topics", getTopics);
@@ -29,25 +30,22 @@ app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
-//DELETE requests
-
+//*** DELETE REQUESTS ***
 app.delete("/api/comments/:comment_id", deleteCommentById);
-//PATCH requests
 
+//*** PATCH REQUESTS ***
 app.patch("/api/articles/:article_id", patchArticle);
-//POST requests
 
+//*** POST REQUESTS ***
 app.post("/api/articles/:article_id/comments", postComments);
 
-//Error Handling
-//Incorrect Endpoint Errors
-
+//*** ERROR HANDLING ***
+//*** INCORRECT ENDPOINT ERRORS ***
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "Error - check endpoint and retry" });
 });
 
-//PSQL Errors
-
+//*** PSQL ERRORS ***
 app.use((err, req, res, next) => {
   if (err.code === "22P02") {
     res.status(400).send({ msg: "Invalid input" });
@@ -69,7 +67,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-// Generic Errors
+//*** GENERAL ERRORS ***
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
@@ -77,7 +75,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-//500 Errors
+//*** 500 ERRORS ***
 
 app.use((err, req, res, next) => {
   if (err.status === 500) {

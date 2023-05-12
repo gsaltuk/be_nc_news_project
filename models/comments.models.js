@@ -1,6 +1,8 @@
+//*** REQUIRES ***
 const connection = require("../db/connection");
 const { checkArticleExists, checkCommentExists } = require("../db/seeds/utils");
 
+//*** GET REQUESTS ***
 exports.fetchCommentsByArticleId = (id) => {
   let queryStr = `
     SELECT * FROM comments
@@ -14,6 +16,7 @@ exports.fetchCommentsByArticleId = (id) => {
   });
 };
 
+//*** DELETE REQUESTS ***
 exports.removeCommentById = (id) => {
   let queryStr = `
   DELETE FROM comments
@@ -24,6 +27,7 @@ exports.removeCommentById = (id) => {
   });
 };
 
+//*** POST REQUESTS ***
 exports.createComment = (id, author, commentBody) => {
   const queryArr = [author, commentBody, id];
   let queryStr = `

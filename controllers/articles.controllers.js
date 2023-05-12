@@ -1,9 +1,11 @@
+//*** REQUIRES ***
 const {
   fetchArticleById,
   fetchArticles,
   updateArticle,
 } = require("../models/articles.models");
 
+//*** GET REQUESTS ***
 exports.getArticleById = (req, res, next) => {
   const id = req.params.article_id;
   fetchArticleById(id)
@@ -25,6 +27,7 @@ exports.getArticles = (req, res, next) => {
     });
 };
 
+//*** PATCH REQUESTS ***
 exports.patchArticle = (req, res, next) => {
   const id = req.params.article_id;
   const voteInc = req.body.inc_votes;
@@ -33,7 +36,6 @@ exports.patchArticle = (req, res, next) => {
       res.status(200).send({ updatedArticle: result });
     })
     .catch((err) => {
-      console.log(err)
       next(err);
     });
 };

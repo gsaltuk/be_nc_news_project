@@ -1,9 +1,12 @@
+//*** REQUIRES ***
 const {
   fetchCommentsByArticleId,
   removeCommentById,
 } = require("../models/comments.models");
 const { createComment } = require("../models/comments.models");
 
+
+//*** GET REQUESTS ***
 exports.getCommentsByArticleId = (req, res, next) => {
   const id = req.params.article_id;
   fetchCommentsByArticleId(id)
@@ -15,6 +18,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
     });
 };
 
+//*** DELETE REQUESTS ***
 exports.deleteCommentById = (req, res, next) => {
   const id = req.params.comment_id;
   removeCommentById(id)
@@ -26,6 +30,7 @@ exports.deleteCommentById = (req, res, next) => {
     });
 };
 
+//*** POST REQUESTS ***
 exports.postComments = (req, res, next) => {
   const id = req.params.article_id;
   const author = req.body.username;

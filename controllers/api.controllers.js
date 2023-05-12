@@ -1,4 +1,7 @@
+//*** REQUIRES ***
 const { fetchApi } = require("../models/api.models");
+
+// *** GET REQUESTS ***
 
 exports.getApi = (req, res, next) => {
   fetchApi()

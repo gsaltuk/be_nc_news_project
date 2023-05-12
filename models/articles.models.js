@@ -1,6 +1,8 @@
+//*** REQUIRES ***
 const connection = require("../db/connection");
 const { checkArticleExists } = require("../db/seeds/utils");
 
+//*** GET REQUESTS ***
 exports.fetchArticleById = (id) => {
   let queryStr = `SELECT * FROM articles
          WHERE article_id = $1;`;
@@ -25,6 +27,7 @@ exports.fetchArticles = () => {
   });
 };
 
+//*** PATCH REQUESTS ***
 exports.updateArticle = (id, voteInc) => {
   let selectQuer = `
   UPDATE articles

@@ -1,5 +1,7 @@
+//*** REQUIRES ***
 const { fetchTopics } = require("../models/topics.models");
 
+//*** GET REQUESTS ***
 exports.getTopics = (req, res, next) => {
   fetchTopics()
     .then((result) => {
