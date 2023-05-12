@@ -40,8 +40,6 @@ exports.fetchArticles = (sort_by, order, topicQuery) => {
   GROUP BY articles.article_id
   ORDER BY ${sort_by} ${order} ;`;
 
-  console.log(queryStr);
-
   return connection.query(queryStr, queryValue).then((result) => {
     if (result.rows.length === 0) {
       return Promise.reject({ status: 404, msg: "Topic not found" });
