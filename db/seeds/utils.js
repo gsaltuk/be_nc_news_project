@@ -41,4 +41,5 @@ exports.checkCommentExists = (commentId) => {
         return Promise.reject({ status: 404, msg: "Comment not found!" });
       }
     });
-};
+  }
+
