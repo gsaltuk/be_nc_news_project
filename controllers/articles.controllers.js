@@ -33,6 +33,7 @@ exports.patchArticle = (req, res, next) => {
       res.status(200).send({ updatedArticle: result });
     })
     .catch((err) => {
+      console.log(err)
       next(err);
     });
 };

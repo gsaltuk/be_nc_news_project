@@ -215,7 +215,8 @@ describe("PATCH /api/articles/:article_id", () => {
   });
   test("Returns status 400 & error message if article_id input is not number", () => {
     return request(app)
-      .get("/api/articles/hello")
+      .patch("/api/articles/hello")
+      .send({ inc_votes: 1 })
       .expect(400)
       .then((res) => {
         expect(res.body.msg).toBe("Invalid input");
