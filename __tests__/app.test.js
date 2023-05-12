@@ -1,15 +1,15 @@
+//*** REQUIRES ***
 const request = require("supertest");
 const app = require("../app");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index");
 const connection = require("../db/connection");
 
+// *** JEST SETUP ***
 beforeEach(() => seed(testData));
-
 afterAll(() => connection.end());
 
-//API
-
+//*** API TESTS ***
 describe("GET /api", () => {
   test("GET - status 200 - Returns status 200 with JSON object", () => {
     return request(app)
@@ -24,8 +24,7 @@ describe("GET /api", () => {
   });
 });
 
-//TOPICS
-
+//*** TOPICS TESTS ***
 describe("GET /api/topics", () => {
   test("GET - status 200 - Returns all topics in an array, with properties slug & description", () => {
     return request(app)
@@ -48,8 +47,7 @@ describe("GET /api/topics", () => {
   });
 });
 
-//ARTICLES
-
+//*** ARTICLES TESTS ***
 describe("GET /api/articles", () => {
   test("GET - Status 200 - Returns status 200 with array of objects with included comment_count property", () => {
     return request(app)
@@ -134,6 +132,55 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
+describe("PATCH /api/articles/:article_id", () => {
+  test("PATCH - status 200 - returns status code 200 with updated object", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 1 })
+      .expect(200)
+      .then((res) => {
+        expect(res.body.updatedArticle.votes).toBe(101);
+      });
+  });
+  test("Patch method works with larger number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 300 })
+      .expect(200)
+      .then((res) => {
+        expect(res.body.updatedArticle.votes).toBe(400);
+      });
+  });
+  test("Returns status 404 with error msg if article does not exist", () => {
+    return request(app)
+      .patch("/api/articles/9999")
+      .send({ inc_votes: 1 })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Article not found!");
+      });
+  });
+  test("Returns status 400 & error message if article_id input is not number", () => {
+    return request(app)
+      .patch("/api/articles/hello")
+      .send({ inc_votes: 1 })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("Invalid input");
+      });
+  });
+  test("Returns status 400 & error message if inc_votes value is not a number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "incorrect data type" })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("Incorrect data type");
+      });
+  });
+});
+
+//*** COMMENTS TESTS ***
 describe("GET /api/articles/:article_id/comments ", () => {
   test("GET - status 200 - Returns array of comment objects for correct article_id sorted by created_at DESC", () => {
     return request(app)
@@ -183,78 +230,6 @@ describe("GET /api/articles/:article_id/comments ", () => {
       });
   });
 });
-
-describe("DELETE /api/comments/:comment_id", () => {
-  test("DELETE - Status 204 - Returns status 204 and no content", () => {
-    return request(app)
-      .delete("/api/comments/12")
-      .expect(204)
-      });
-      test("Returns status 400 and error message when id is not integer", () => {
-        return request(app)
-          .delete("/api/comments/hello")
-          .expect(400)
-          .then((res) => {
-            expect(res.body.msg).toEqual("Invalid input");
-          });
-      });
-      test("Returns status 404 and error message when id does not exist", () => {
-        return request(app)
-          .delete("/api/comments/9999")
-          .expect(404)
-          .then((res) => {
-            expect(res.body.msg).toEqual("Comment not found!");
-          });
-      });
-  });
-  
-describe("PATCH /api/articles/:article_id", () => {
-  test("PATCH - status 200 - returns status code 200 with updated object", () => {
-    return request(app)
-      .patch("/api/articles/1")
-      .send({ inc_votes: 1 })
-      .expect(200)
-      .then((res) => {
-        expect(res.body.updatedArticle.votes).toBe(101);
-      });
-  });
-  test("Patch method works with larger number", () => {
-    return request(app)
-      .patch("/api/articles/1")
-      .send({ inc_votes: 300 })
-      .expect(200)
-      .then((res) => {
-        expect(res.body.updatedArticle.votes).toBe(400);
-      });
-  });
-  test("Returns status 404 with error msg if article does not exist", () => {
-    return request(app)
-      .patch("/api/articles/9999")
-      .send({ inc_votes: 1 })
-      .expect(404)
-      .then((res) => {
-        expect(res.body.msg).toBe("Article not found!");
-      });
-  });
-  test("Returns status 400 & error message if article_id input is not number", () => {
-    return request(app)
-      .patch("/api/articles/hello")
-      .send({ inc_votes: 1 })
-      .expect(400)
-      .then((res) => {
-        expect(res.body.msg).toBe("Invalid input");
-      });
-  });
-  test("Returns status 400 & error message if inc_votes value is not a number", () => {
-    return request(app)
-      .patch("/api/articles/1")
-      .send({ inc_votes: "incorrect data type" })
-      .expect(400)
-      .then((res) => {
-        expect(res.body.msg).toBe("Incorrect data type");
-      });
-    })})
-    
 
 describe("POST /api/articles/:article_id/comments", () => {
   test("POST - status 201 - Returns status 201 and posted comment object", () => {
@@ -330,11 +305,33 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send({
         username: "butter_bridge",
         body: "Totally agree, thank you for posting this",
-        nonsense: "Testing value"
+        nonsense: "Testing value",
       })
       .expect(201)
       .then((res) => {
         expect(res.body.commentPosted).not.toHaveProperty("nonsense");
+      });
+  });
+});
+
+describe("DELETE /api/comments/:comment_id", () => {
+  test("DELETE - Status 204 - Returns status 204 and no content", () => {
+    return request(app).delete("/api/comments/12").expect(204);
+  });
+  test("Returns status 400 and error message when id is not integer", () => {
+    return request(app)
+      .delete("/api/comments/hello")
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toEqual("Invalid input");
+      });
+  });
+  test("Returns status 404 and error message when id does not exist", () => {
+    return request(app)
+      .delete("/api/comments/9999")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toEqual("Comment not found!");
       });
   });
 });
