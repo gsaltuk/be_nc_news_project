@@ -180,6 +180,50 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 });
 
+//* ARTICLE QUERY TESTS *
+
+describe("GET QUERY /api/articles?topic=mitch", () => {
+  test("GET - status 200 - Returns status code 200 and filtered articles array with specified query", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.articles.length).toBe(11);
+        res.body.articles.forEach((article) => {
+          expect(article.topic).toBe("mitch");
+        });
+      });
+  });
+  test("GET - status 404 - Returns status code 404 with error msg if topic not found", () => {
+    return request(app)
+      .get("/api/articles?topic=nonsense")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Topic not found");
+      });
+  });
+  test("GET - status 200 - Returns array sorted by sort_by query specified", () => {
+    return request(app)
+      .get("/api/articles?order=desc")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+  test("GET - status 200 - Returns array sorted by sort_by & order query combined", () => {
+    return request(app)
+      .get("/api/articles?sort_by=created_at&order=desc")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+});
+
 //*** COMMENTS TESTS ***
 describe("GET /api/articles/:article_id/comments ", () => {
   test("GET - status 200 - Returns array of comment objects for correct article_id sorted by created_at DESC", () => {
@@ -361,7 +405,7 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then((res) => {
-        expect(res.body.msg).toBe()
-      })
-  })
+        expect(res.body.msg).toBe();
+      });
+  });
 });
