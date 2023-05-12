@@ -335,3 +335,33 @@ describe("DELETE /api/comments/:comment_id", () => {
       });
   });
 });
+
+//*** USERS TESTS ***
+describe("GET /api/users", () => {
+  test("GET - status 200 - Returns a status code 200 with an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.users.length).toBe(4);
+        expect(Array.isArray(res.body.users)).toBe(true);
+        res.body.users.forEach((user) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+  test("GET - status 200 - Returns a status code 200 with an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.msg).toBe()
+      })
+  })
+});
