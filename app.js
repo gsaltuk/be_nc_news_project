@@ -3,6 +3,7 @@ const { getTopics } = require("./controllers/topics.controllers");
 const { getApi } = require("./controllers/api.controllers");
 const {
   getCommentsByArticleId,
+  deleteCommentById,
 } = require("./controllers/comments.controllers");
 const {
   getArticleById,
@@ -28,6 +29,9 @@ app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
+//DELETE requests
+
+app.delete("/api/comments/:comment_id", deleteCommentById);
 //PATCH requests
 
 app.patch("/api/articles/:article_id", patchArticle);
