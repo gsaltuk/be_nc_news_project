@@ -5,19 +5,18 @@ const { getApi } = require("./controllers/api.controllers");
 const {
   getCommentsByArticleId,
   deleteCommentById,
-  postComments
+  postComments,
 } = require("./controllers/comments.controllers");
 const {
   getArticleById,
   getArticles,
   patchArticle,
 } = require("./controllers/articles.controllers");
+const { getUsers } = require("./controllers/users.controllers");
 const app = express();
-
 
 //*** JSON PARSER ***
 app.use(express.json());
-
 
 //*** GET REQUESTS ***
 app.get("/api", getApi);
@@ -29,6 +28,8 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+
+app.get("/api/users", getUsers);
 
 //*** DELETE REQUESTS ***
 app.delete("/api/comments/:comment_id", deleteCommentById);
