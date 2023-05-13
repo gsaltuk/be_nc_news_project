@@ -222,6 +222,14 @@ describe("GET QUERY /api/articles?topic=mitch", () => {
         });
       });
   });
+  test("GET - status 200 - Returns empty array when valid query but no results", () => {
+    return request(app)
+      .get("/api/articles?topic=paper")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.articles).toEqual([]);
+      });
+  });
 });
 
 //*** COMMENTS TESTS ***

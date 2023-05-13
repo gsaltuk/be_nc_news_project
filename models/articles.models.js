@@ -1,6 +1,6 @@
 //*** REQUIRES ***
 const connection = require("../db/connection");
-const { checkArticleExists } = require("../db/seeds/utils");
+const { checkArticleExists, checkTopicExists } = require("../db/seeds/utils");
 
 //*** GET REQUESTS ***
 exports.fetchArticleById = (id) => {
@@ -32,20 +32,24 @@ exports.fetchArticles = (sort_by, order, topicQuery) => {
   }
 
   if (topicQuery) {
-    queryStr += ` WHERE topic = $1`;
-    queryValue.push(topicQuery);
+    return checkTopicExists(topicQuery).then(() => {
+      queryStr += ` WHERE topic = $1`;
+      queryValue.push(topicQuery);
+      queryStr += ` 
+      GROUP BY articles.article_id
+      ORDER BY ${sort_by} ${order} ;`;
+      return connection.query(queryStr, queryValue).then((result) => {
+        return result.rows;
+      });
+    });
+  } else {
+    queryStr += ` 
+      GROUP BY articles.article_id
+      ORDER BY ${sort_by} ${order} ;`;
+    return connection.query(queryStr, queryValue).then((result) => {
+      return result.rows;
+    });
   }
-
-  queryStr += ` 
-  GROUP BY articles.article_id
-  ORDER BY ${sort_by} ${order} ;`;
-
-  return connection.query(queryStr, queryValue).then((result) => {
-    if (result.rows.length === 0) {
-      return Promise.reject({ status: 404, msg: "Topic not found" });
-    }
-    return result.rows;
-  });
 };
 
 //*** PATCH REQUESTS ***
