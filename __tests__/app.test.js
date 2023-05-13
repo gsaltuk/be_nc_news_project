@@ -105,11 +105,12 @@ describe("GET /api/articles/:article_id", () => {
           expect.objectContaining({
             title: expect.any(String),
             author: expect.any(String),
-            body: expect.any(String),
+            topic: expect.any(String),
             votes: expect.any(Number),
             article_id: expect.any(Number),
             created_at: expect.any(String),
             article_img_url: expect.any(String),
+            comment_count: expect.any(Number)
           })
         );
       });
