@@ -1,6 +1,6 @@
 //*** REQUIRES ***
 const connection = require("../db/connection");
-const { checkArticleExists } = require("../db/seeds/utils");
+const { checkArticleExists, checkTopicExists } = require("../db/seeds/utils");
 
 //*** GET REQUESTS ***
 exports.fetchArticleById = (id) => {
@@ -14,17 +14,42 @@ exports.fetchArticleById = (id) => {
   });
 };
 
-exports.fetchArticles = () => {
+exports.fetchArticles = (sort_by, order, topicQuery) => {
   let queryStr = `
   SELECT articles.article_id, articles.author, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count
   FROM articles
-  LEFT JOIN comments ON comments.article_id = articles.article_id
-  GROUP BY articles.article_id
-  ORDER BY created_at DESC;
-  `;
-  return connection.query(queryStr).then((result) => {
-    return result.rows;
-  });
+  LEFT JOIN comments ON comments.article_id = articles.article_id`;
+
+  const queryValue = [];
+  const validSortQueries = ["created_at", "title", "topic", "author"];
+  const validOrderQueries = ["desc", "asc"];
+
+  if (
+    !validSortQueries.includes(sort_by) ||
+    !validOrderQueries.includes(order)
+  ) {
+    return Promise.reject({ status: 400, msg: "Invalid sort query" });
+  }
+
+  if (topicQuery) {
+    return checkTopicExists(topicQuery).then(() => {
+      queryStr += ` WHERE topic = $1`;
+      queryValue.push(topicQuery);
+      queryStr += ` 
+      GROUP BY articles.article_id
+      ORDER BY ${sort_by} ${order} ;`;
+      return connection.query(queryStr, queryValue).then((result) => {
+        return result.rows;
+      });
+    });
+  } else {
+    queryStr += ` 
+      GROUP BY articles.article_id
+      ORDER BY ${sort_by} ${order} ;`;
+    return connection.query(queryStr, queryValue).then((result) => {
+      return result.rows;
+    });
+  }
 };
 
 //*** PATCH REQUESTS ***

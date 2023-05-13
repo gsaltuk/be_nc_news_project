@@ -18,11 +18,15 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  fetchArticles()
+  const topicQuery = req.query.topic;
+  const sort_by = req.query.sort_by || "created_at";
+  const order = req.query.order || "desc"
+  fetchArticles(sort_by, order, topicQuery)
     .then((result) => {
       res.status(200).send({ articles: result });
     })
     .catch((err) => {
+      console.log(err)
       next(err);
     });
 };
