@@ -110,7 +110,7 @@ describe("GET /api/articles/:article_id", () => {
             article_id: expect.any(Number),
             created_at: expect.any(String),
             article_img_url: expect.any(String),
-            comment_count: expect.any(Number)
+            comment_count: expect.any(Number),
           })
         );
       });
