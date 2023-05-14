@@ -1,33 +1,27 @@
 # Northcoders News API
 
 ## Project Overview
+### **Tech Stack** Javascript, Expres.js, Node.js, PostgreSQL
+
 
 
 <br/>
-This repo is a RESTful API that serves as the backend architecture for a Reddit-style Northcoders News Web Application. It is built using Node.js and Express.js and uses PostgreSQL as its database. The API allows users to interact with the application by performing full CRUD (Create, Read, Update, Delete) operations on articles, comments, and users.
-<br/><br/>
+
+This repo is a RESTful API that serves as the backend architecture for a Reddit-style Northcoders News Web Application. It is built using [Node.js](https://nodejs.org/) and [Express.js](https://expressjs.com/) and uses [PostgreSQL](https://www.postgresql.org/) as its database. The API allows users to interact with the application by performing full CRUD (Create, Read, Update, Delete) operations on articles, comments, and users.
+
+<br/>
 
 This API will serve as the backend for a frontend project built with [***React.js***](https://react.dev/).
 <br/><br/>
 
-A live version of this app is available [**here**](https://nc-news-gs.onrender.com/api), hosted with Render.
+A live version of this app is available [**here**](https://nc-news-gs.onrender.com/api), hosted with Render. A list of available endpoints can be found [here](#api-endpoints)
 <br/><br/>
-### **Tech Stack** Javascript, Expres.js, Node.js, PostgreSQL
-<br>
 
-<style>
-table {
-  border-collapse: collapse;
-}
 
-table td, table th {
-  border: none;
-}
-</style>
-| <img src="dev-icons/javascript-plain.svg" width="100"/> | <img src="dev-icons/express-original.svg" width="100"/> | <img src="dev-icons/nodejs-original.svg" width="100"/> | <img src="dev-icons/postgresql-plain.svg" width="100"/> |
-| :------------------------------------------------------: | :----------------------------------------------------: | :--------------------------------------------------: | :-------------------------------------------------------: |
+<!-- | <img src="dev-icons/javascript-plain.svg" width="100"/> | <img src="dev-icons/express-original.svg" width="100"/> | <img src="dev-icons/nodejs-original.svg" width="100"/> | <img src="dev-icons/postgresql-plain.svg" width="100"/> |
+| :------------------------------------------------------: | :----------------------------------------------------: | :--------------------------------------------------: | :-------------------------------------------------------: | -->
 
-<br></br>
+<!-- <br></br> -->
 
 ## **Setup**
 
@@ -86,6 +80,7 @@ $ npm run setup-dbs
 $ npm run seed
 ```
 <br>
+<a name="endpoints"></a>
 
 ## **API Endpoints**
 
