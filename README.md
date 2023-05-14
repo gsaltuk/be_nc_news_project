@@ -14,7 +14,15 @@ A live version of this app is available [**here**](https://nc-news-gs.onrender.c
 <br/><br/>
 ### **Tech Stack** Javascript, Expres.js, Node.js, PostgreSQL
 <br>
+<style>
+table {
+  border-collapse: collapse;
+}
 
+table td, table th {
+  border: none;
+}
+</style>
 | <img src="dev-icons/javascript-plain.svg" width="100"/> | <img src="dev-icons/express-original.svg" width="100"/> | <img src="dev-icons/nodejs-original.svg" width="100"/> | <img src="dev-icons/postgresql-plain.svg" width="100"/> |
 | :------------------------------------------------------: | :----------------------------------------------------: | :--------------------------------------------------: | :-------------------------------------------------------: |
 
