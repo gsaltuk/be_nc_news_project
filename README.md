@@ -16,20 +16,9 @@ A live version of this app is available [**here**](https://nc-news-gs.onrender.c
 ### **Tech Stack** Javascript, Expres.js, Node.js, PostgreSQL
 <br>
 
-<div style="display:flex">
-     <div style="flex:1;padding-right:10px;">
-          <img src="dev-icons/javascript-plain.svg" width="100"/>
-     </div>
-     <div style="flex:1;padding-left:10px;">
-          <img src="dev-icons/express-original.svg" width="100"/>
-     </div>
-     <div style="flex:1;padding-left:10px;">
-          <img src="dev-icons/nodejs-original.svg" width="100"/>
-     </div>
-     <div style="flex:1;padding-left:10px;">
-          <img src="dev-icons/postgresql-plain.svg" width="100"/>
-     </div>
-</div>
+| <img src="dev-icons/javascript-plain.svg" width="100"/> | <img src="dev-icons/express-original.svg" width="100"/> | <img src="dev-icons/nodejs-original.svg" width="100"/> | <img src="dev-icons/postgresql-plain.svg" width="100"/> |
+| :------------------------------------------------------: | :----------------------------------------------------: | :--------------------------------------------------: | :-------------------------------------------------------: |
+
 <br></br>
 
 ## **Setup**
