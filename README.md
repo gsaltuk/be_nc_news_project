@@ -2,7 +2,6 @@
 
 ## Project Overview
 
----
 
 <br/>
 This repo is a RESTful API that serves as the backend architecture for a Reddit-style Northcoders News Web Application. It is built using Node.js and Express.js and uses PostgreSQL as its database. The API allows users to interact with the application by performing full CRUD (Create, Read, Update, Delete) operations on articles, comments, and users.
@@ -22,7 +21,6 @@ A live version of this app is available [**here**](https://nc-news-gs.onrender.c
 <br></br>
 
 ## **Setup**
----
 
 *Follow the instructions below to get started*
 <br></br>
@@ -82,7 +80,6 @@ $ npm run seed
 
 ## **API Endpoints**
 
----
 
 *Users are able to access and interact with the data using the following **endpoints***:
 
