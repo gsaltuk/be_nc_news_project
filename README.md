@@ -175,4 +175,4 @@ $ npm run seed
 <br/><br/>
 
 
-*This project was created as part of the **Northcoders Software Development Bootcamp***
+*This project was created as part of the* [***Northcoders Software Development Bootcamp***](https://northcoders.com/our-courses/coding-bootcamp).
