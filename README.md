@@ -173,4 +173,6 @@ $ npm run seed
 - Deletes specified comment
 
 <br/><br/>
-<br/><br/>
+
+
+*This project was created as part of the **Northcoders Software Development Bootcamp***
