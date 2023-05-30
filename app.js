@@ -14,8 +14,10 @@ const {
 } = require("./controllers/articles.controllers");
 const { getUsers } = require("./controllers/users.controllers");
 const app = express();
+const cors = require("cors");
 
 //*** JSON PARSER ***
+app.use(cors())
 app.use(express.json());
 
 //*** GET REQUESTS ***

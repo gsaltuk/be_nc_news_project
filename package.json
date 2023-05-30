@@ -30,6 +30,7 @@
     "supertest": "^6.3.3"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
@@ -38,6 +39,9 @@
     "postgres": "^3.3.4"
   },
   "jest": {
-    "setupFilesAfterEnv": ["jest-extended/all", "jest-sorted"]
+    "setupFilesAfterEnv": [
+      "jest-extended/all",
+      "jest-sorted"
+    ]
   }
 }
