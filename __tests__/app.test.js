@@ -61,7 +61,7 @@ describe("GET /api/articles", () => {
               article_id: expect.any(Number),
               article_img_url: expect.any(String),
               author: expect.any(String),
-              comment_count: expect.any(String),
+              comment_count: expect.any(Number),
               created_at: expect.any(String),
               topic: expect.any(String),
               votes: expect.any(Number),
