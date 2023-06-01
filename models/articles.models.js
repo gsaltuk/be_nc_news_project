@@ -23,7 +23,7 @@ exports.fetchArticles = (sort_by, order, topicQuery) => {
   LEFT JOIN comments ON comments.article_id = articles.article_id`;
 
   const queryValue = [];
-  const validSortQueries = ["created_at", "title", "topic", "author"];
+  const validSortQueries = ["created_at", "title", "topic", "author", "comment_count", "votes"];
   const validOrderQueries = ["desc", "asc"];
 
   if (
